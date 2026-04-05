@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>募集案件一覧 | MEDI ALPHA PLUS</title>
+  <meta name="description" content="MEDI ALPHA PLUS 現在募集中の案件一覧。医療検体輸送ドライバー（業務委託）。東京・神奈川・埼玉・静岡・大阪・神戸など全国募集。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/jobs.css">
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="jobs-header">
+    <div class="jobs-header-inner">
+      <a href="index.html" class="jobs-logo">
+        <img src="images/logo.png" alt="MEDI ALPHA PLUS">
+      </a>
+      <a href="index.html" class="jobs-back-btn">
+        <i class="fas fa-arrow-left"></i> 採用LPに戻る
+      </a>
+    </div>
+  </header>
+
+  <!-- ページヒーロー -->
+  <section class="jobs-hero">
+    <div class="jobs-hero-inner">
+      <p class="jobs-hero-label">RECRUIT JOBS</p>
+      <h1>現在募集中の<br><span>案件一覧</span></h1>
+      <p class="jobs-hero-sub">随時更新中。気になる案件があればお気軽にご相談ください。</p>
+      <div class="jobs-hero-tags">
+        <span><i class="fas fa-map-marker-alt"></i> 全国対応</span>
+        <span><i class="fas fa-user-check"></i> 未経験OK</span>
+        <span><i class="fas fa-briefcase"></i> 業務委託</span>
+        <span><i class="fas fa-sync-alt"></i> 随時更新</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- フィルター -->
+  <div class="jobs-filter-bar">
+    <div class="jobs-filter-inner">
+      <span class="jobs-filter-label"><i class="fas fa-filter"></i> エリアで絞り込む</span>
+      <div class="jobs-filter-btns">
+        <button class="filter-btn active" data-filter="all">すべて</button>
+        <button class="filter-btn" data-filter="東京">東京</button>
+        <button class="filter-btn" data-filter="埼玉">埼玉</button>
+        <button class="filter-btn" data-filter="千葉">千葉</button>
+        <button class="filter-btn" data-filter="神奈川">神奈川</button>
+        <button class="filter-btn" data-filter="東海">東海</button>
+        <button class="filter-btn" data-filter="関西">関西</button>
+        <button class="filter-btn" data-filter="全国">全国（スポット）</button>
+      </div>
+      <span class="jobs-count">全 <strong id="jobs-count-num">—</strong> 件</span>
+    </div>
+  </div>
+
+  <!-- 案件一覧 -->
+  <main class="jobs-main">
+    <div class="jobs-container">
+
+      <!-- ローディング -->
+      <div class="jobs-loading" id="jobs-loading">
+        <div class="jobs-spinner"></div>
+        <p>案件を読み込み中...</p>
+      </div>
+
+      <!-- 案件グリッド -->
+      <div class="jobs-grid" id="jobs-grid"></div>
+
+      <!-- 0件時 -->
+      <div class="jobs-empty" id="jobs-empty" style="display:none;">
+        <i class="fas fa-search"></i>
+        <p>条件に合う案件が見つかりませんでした。</p>
+        <button class="filter-btn active" onclick="resetFilter()">すべて表示</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 固定CTA -->
+  <div class="jobs-fixed-cta">
+    <div class="jobs-fixed-cta-inner">
+      <div class="jobs-fixed-cta-text">
+        <strong>気になる案件はありましたか？</strong>
+        <span>「まず話を聞きたい」だけでも大歓迎です</span>
+      </div>
+      <div class="jobs-fixed-cta-btns">
+        <a href="https://medialphaplus.myshopify.com/pages/%E6%8E%A1%E7%94%A8%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0" class="jobs-cta-form" target="_blank" rel="noopener">
+          <i class="fas fa-pen-to-square"></i> 採用フォームから応募
+        </a>
+        <a href="https://lin.ee/pFsiKeq" class="jobs-cta-line" target="_blank" rel="noopener">
+          <i class="fab fa-line"></i> LINEで相談
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- ステータス設定 ----
+    const STATUS_CONFIG = {
+      '急募':       { cls: 'status-urgent',    icon: 'fas fa-fire',        label: '急募' },
+      '募集中':     { cls: 'status-open',      icon: 'fas fa-circle',      label: '募集中' },
+      '残りわずか': { cls: 'status-few',       icon: 'fas fa-hourglass-half', label: '残りわずか' },
+      '募集終了':   { cls: 'status-closed',    icon: 'fas fa-times-circle', label: '募集終了' },
+    };
+
+    const AREA_COLORS = {
+      '東京': '#1a73e8', '神奈川': '#0a9396', '埼玉': '#2d6a4f',
+      '千葉': '#6a4c93', '東海': '#e07a5f',  '関西': '#c77dff',
+      '九州': '#f4845f', 'その他': '#888',
+    };
+
+    const WORK_TYPE_ICONS = {
+      '血液検体回収': 'fas fa-tint',
+      '緊急検体搬送': 'fas fa-bolt',
+      '定期ルート便':  'fas fa-route',
+      '長距離搬送':    'fas fa-road',
+      '新規ルート開拓':'fas fa-map-marked-alt',
+      '医療資材回収':  'fas fa-box-open',
+      '検体集配':      'fas fa-vials',
+      '検体回収':      'fas fa-vial',
+      '健診検体回収':  'fas fa-stethoscope',
+    };
+
+    let allJobs = [];
+    let currentFilter = 'all';
+
+    // ---- データ取得 ----
+    async function loadJobs() {
+      try {
+        const res = await fetch('data/jobs.json');
+        const data = await res.json();
+        allJobs = data
+          .filter(j => j.is_active !== false && j.status !== '募集終了')
+          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+        renderJobs(allJobs);
+      } catch(e) {
+        console.error(e);
+        document.getElementById('jobs-loading').innerHTML =
+          '<p style="color:#e74c3c">案件の読み込みに失敗しました。</p>';
+      }
+    }
+
+    // ---- レンダリング ----
+    function renderJobs(jobs) {
+      const grid = document.getElementById('jobs-grid');
+      const loading = document.getElementById('jobs-loading');
+      const empty = document.getElementById('jobs-empty');
+      const countEl = document.getElementById('jobs-count-num');
+
+      loading.style.display = 'none';
+      countEl.textContent = jobs.length;
+
+      if (jobs.length === 0) {
+        grid.innerHTML = '';
+        empty.style.display = 'flex';
+        return;
+      }
+      empty.style.display = 'none';
+
+      grid.innerHTML = jobs.map(job => {
+        const st = STATUS_CONFIG[job.status] || STATUS_CONFIG['募集中'];
+        const areaColor = AREA_COLORS[job.area_tag] || '#888';
+        const workIcon = Object.keys(WORK_TYPE_ICONS).find(k => job.work_type?.includes(k));
+        const icon = workIcon ? WORK_TYPE_ICONS[workIcon] : 'fas fa-car';
+        const imgHtml = job.image
+          ? `<div class="job-card-img"><img src="${job.image}" alt="${job.title}" loading="lazy"></div>`
+          : '';
+
+        return `
+        <article class="job-card" data-area="${job.area_tag || ''}">
+          ${imgHtml}
+          <div class="job-card-inner">
+            <div class="job-card-top">
+              <div class="job-area-tag" style="background:${areaColor}15;color:${areaColor};border-color:${areaColor}30">
+                <i class="fas fa-map-pin"></i> ${job.area_tag || 'その他'}
+              </div>
+              <span class="job-status ${st.cls}">
+                <i class="${st.icon}"></i> ${st.label}
+              </span>
+            </div>
+
+            <h2 class="job-title">${job.title}</h2>
+
+            <div class="job-area-detail">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>${job.area}</span>
+            </div>
+
+            <div class="job-meta">
+              <div class="job-meta-item">
+                <i class="fas fa-clock"></i>
+                <span>${job.time_slot}</span>
+              </div>
+              <div class="job-meta-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>${job.work_days}</span>
+              </div>
+              <div class="job-meta-item">
+                <i class="fas fa-car"></i>
+                <span>${job.vehicle}</span>
+              </div>
+              ${job.distance ? `<div class="job-meta-item"><i class="fas fa-road"></i><span>${job.distance}</span></div>` : ''}
+            </div>
+
+            ${job.description ? `<p class="job-desc">${job.description}</p>` : ''}
+
+            ${Array.isArray(job.features) && job.features.length ? `
+            <div class="job-features">
+              ${job.features.map(f => `<span class="job-feature-tag"><i class="fas fa-check-circle"></i> ${f}</span>`).join('')}
+            </div>` : ''}
+
+            <div class="job-reward">
+              <i class="fas fa-yen-sign"></i>
+              <span>報酬目安：<strong>${job.reward_note}</strong></span>
+            </div>
+            <p class="job-reward-note"><i class="fas fa-info-circle"></i> 報酬は経験・スキルに応じて変動します</p>
+
+            <div class="job-card-actions">
+              <a href="https://medialphaplus.myshopify.com/pages/%E6%8E%A1%E7%94%A8%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0"
+                 class="job-apply-btn" target="_blank" rel="noopener">
+                <i class="fas fa-pen-to-square"></i> この案件に応募する
+              </a>
+              <a href="https://lin.ee/pFsiKeq" class="job-line-btn" target="_blank" rel="noopener">
+                <i class="fab fa-line"></i> 相談
+              </a>
+            </div>
+          </div>
+        </article>`;
+      }).join('');
+    }
+
+    // ---- フィルター ----
+    function applyFilter(tag) {
+      currentFilter = tag;
+      const filtered = tag === 'all'
+        ? allJobs
+        : allJobs.filter(j => j.area_tag === tag);
+      renderJobs(filtered);
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === tag);
+      });
+    }
+
+    function resetFilter() { applyFilter('all'); }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    });
+
+    // ---- 初期化 ----
+    loadJobs();
+  </script>
+</body>
+</html>
