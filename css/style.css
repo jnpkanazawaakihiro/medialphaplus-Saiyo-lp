@@ -2501,6 +2501,252 @@ ul { list-style: none; }
 
 
 /* ===========================================
+   正規雇用 vs 業務委託 比較テーブル
+   =========================================== */
+.emp-vs-fc {
+  background: var(--gray-light);
+}
+
+/* テーブルラッパー */
+.evf-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,30,80,0.10);
+  margin-bottom: 32px;
+}
+.evf-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ヘッダー */
+.evf-table thead tr {
+  background: var(--navy);
+}
+.evf-table thead th {
+  padding: 18px 20px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  vertical-align: middle;
+}
+.evf-th-item {
+  width: 22%;
+  text-align: left !important;
+  background: #0a1628;
+}
+.evf-th-regular { width: 37%; }
+.evf-th-fc {
+  width: 41%;
+  background: rgba(201,163,63,0.18);
+}
+
+/* ヘッダーバッジ */
+.evf-head-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.evf-head-badge i {
+  font-size: 1.3rem;
+  margin-bottom: 4px;
+}
+.evf-head-badge span {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.evf-head-badge small {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  font-weight: 400;
+}
+.evf-badge-regular i { color: #a0b4c8; }
+.evf-badge-fc {
+  color: var(--gold);
+}
+.evf-badge-fc i { color: var(--gold); }
+
+/* ボディ行 */
+.evf-table tbody tr {
+  border-bottom: 1px solid #eef2f8;
+  transition: background 0.15s;
+}
+.evf-table tbody tr:last-child { border-bottom: none; }
+.evf-table tbody tr:hover { background: #f8faff; }
+.evf-table tbody tr:nth-child(even) { background: #fbfcff; }
+.evf-table tbody tr:nth-child(even):hover { background: #f5f8ff; }
+
+/* セル共通 */
+.evf-table tbody td {
+  padding: 20px 20px;
+  vertical-align: middle;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* 比較項目列 */
+.evf-td-item {
+  background: #f0f4f8;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.evf-item-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--navy);
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+/* 正規雇用列 */
+.evf-td-regular {
+  color: #555;
+  text-align: center;
+}
+
+/* 業務委託列（ハイライト） */
+.evf-td-fc {
+  text-align: center;
+  background: rgba(245,232,195,0.15);
+}
+.evf-highlight {
+  background: rgba(201,163,63,0.07) !important;
+}
+
+/* 値テキスト */
+.evf-val {
+  display: block;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.evf-val-good {
+  color: #1a7a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.evf-val-good i { font-size: 0.85rem; }
+.evf-sub {
+  display: block;
+  font-size: 0.76rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+/* 補足コピー */
+.evf-note-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.evf-note-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #dde5f0;
+  border-radius: 12px;
+  padding: 20px 22px;
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.8;
+}
+.evf-note-item i {
+  color: var(--blue);
+  flex-shrink: 0;
+  margin-top: 3px;
+  font-size: 1.1rem;
+}
+.evf-note-item strong { color: var(--navy); }
+.evf-note-cta {
+  border-left: 4px solid var(--gold);
+}
+.evf-note-cta i { color: var(--gold); }
+
+/* 信頼ブロック */
+.evf-trust-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 32px 24px;
+  flex-wrap: wrap;
+}
+.evf-trust-item {
+  text-align: center;
+  padding: 0 32px;
+}
+.evf-trust-num {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--gold);
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.evf-trust-num span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-left: 2px;
+}
+.evf-trust-label {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+}
+.evf-trust-divider {
+  width: 1px;
+  height: 48px;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .evf-note-block { grid-template-columns: 1fr; }
+  .evf-trust-item { padding: 12px 20px; }
+  .evf-trust-num { font-size: 1.9rem; }
+  .evf-trust-divider { display: none; }
+  .evf-trust-block { gap: 8px; }
+}
+@media (max-width: 480px) {
+  .evf-table { min-width: 520px; }
+  .evf-trust-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .evf-trust-item {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 16px 12px;
+  }
+}
+
+
+/* ===========================================
    ONBOARD FLOW（稼働スタートまでの流れ）
    =========================================== */
 
@@ -4090,6 +4336,307 @@ ul { list-style: none; }
   font-size: 0.77rem;
   color: var(--gray);
   line-height: 1.7;
+}
+
+/* 経費ブロック */
+/* ===========================================
+   業務委託ならではの収入ブロック
+   =========================================== */
+.income-cost-block {
+  margin-top: 48px;
+  background: #fffaf2;
+  border: 1px solid #f5c07a;
+  border-left: 6px solid var(--gold);
+  border-radius: 16px;
+  padding: 40px 44px;
+}
+
+/* ヘッダー */
+.income-cost-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.income-cost-header-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--gold);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.income-cost-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.income-cost-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+}
+.income-cost-lead {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+.income-cost-lead strong { color: var(--navy); }
+
+/* 計算式ビジュアル */
+.income-cost-eq {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.income-cost-eq-box {
+  border-radius: 12px;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.income-cost-eq-revenue {
+  background: var(--navy);
+  color: #fff;
+  margin-bottom: 2px;
+}
+.income-cost-eq-result {
+  background: linear-gradient(135deg, var(--gold), #e6a800);
+  color: var(--navy);
+}
+.income-cost-eq-sub {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  letter-spacing: 0.05em;
+}
+.income-cost-eq-main {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.income-cost-eq-ex {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+/* 演算子 */
+.income-cost-eq-op {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  color: #c0392b;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.income-cost-eq-op i { font-size: 1rem; }
+.income-cost-eq-op--eq { color: var(--navy); }
+
+/* 経費一覧 */
+.income-cost-eq-expenses {
+  background: #fff;
+  border: 1.5px solid #f0d8b0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+.income-cost-expense-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 22px;
+  border-bottom: 1px solid #faebd7;
+  transition: background 0.15s;
+}
+.income-cost-expense-item:last-child { border-bottom: none; }
+.income-cost-expense-item:hover { background: #fffbf0; }
+
+.ice-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #fff3d0, #ffd97a);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.ice-body { flex: 1; }
+.ice-name {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.ice-detail {
+  display: block;
+  font-size: 0.78rem;
+  color: #777;
+  line-height: 1.75;
+}
+
+/* 補足 */
+.income-cost-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(245,192,122,0.12);
+  border: 1px solid #f5c07a;
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-top: 20px;
+  font-size: 0.82rem;
+  color: #665500;
+  line-height: 1.75;
+}
+.income-cost-note i {
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 1rem;
+}
+
+/* ===========================================
+   個人事業主の魅力ブロック
+   =========================================== */
+.income-merit-block {
+  margin-top: 44px;
+  background: linear-gradient(135deg, #f0f5ff 0%, #e6eeff 100%);
+  border: 1px solid #c0d3f5;
+  border-left: 6px solid var(--blue);
+  border-radius: 16px;
+  padding: 40px 44px;
+}
+.income-merit-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.income-merit-header-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--blue), var(--navy));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.income-merit-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.income-merit-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+}
+.income-merit-lead {
+  font-size: 0.92rem;
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 28px;
+}
+.income-merit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.income-merit-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px 20px;
+  border: 1px solid #dce8fb;
+  box-shadow: 0 2px 10px rgba(30,70,180,0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.income-merit-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(30,70,180,0.12);
+}
+.income-merit-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--blue), var(--navy));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 14px;
+}
+.income-merit-card h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  line-height: 1.45;
+}
+.income-merit-card p {
+  font-size: 0.79rem;
+  color: #666;
+  line-height: 1.8;
+}
+.income-merit-card p strong { color: var(--navy); }
+
+/* CTA Note */
+.income-merit-cta {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid #c0d3f5;
+  border-radius: 10px;
+  padding: 18px 22px;
+  font-size: 0.85rem;
+  color: #444;
+  line-height: 1.8;
+}
+.income-merit-cta i {
+  color: var(--blue);
+  flex-shrink: 0;
+  margin-top: 3px;
+  font-size: 1.1rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 900px) {
+  .income-merit-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .income-cost-block,
+  .income-merit-block { padding: 28px 22px; }
+  .income-merit-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@media (max-width: 540px) {
+  .income-merit-grid { grid-template-columns: 1fr; }
+  .income-cost-header h3,
+  .income-merit-header h3 { font-size: 1rem; }
+  .income-cost-expense-item { padding: 14px 16px; gap: 12px; }
 }
 
 
